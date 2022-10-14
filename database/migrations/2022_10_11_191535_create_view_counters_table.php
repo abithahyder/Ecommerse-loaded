@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartsTable extends Migration
+class CreateViewCountersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateCartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->increments('cart_id');
-            $table->string('p_id');
-            $table->integer('taken_qty');
-            $table->integer('user_id');
-            $table->string('p_vo_id')->nullable();
-            $table->string('sku')->nullable();
+        Schema::create('view_counters', function (Blueprint $table) {
+            $table->id('vc_id');
+            $table->integer('vc_p_id')->nullable();
+            $table->integer('vc_c_id')->nullable();
+            $table->integer('vc_counter')->nullable();
+            $table->date('vc_date')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +30,6 @@ class CreateCartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('view_counters');
     }
 }

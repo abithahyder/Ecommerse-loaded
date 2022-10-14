@@ -97,7 +97,9 @@
 											<ul class="kt-menu__subnav">
 												<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Category List</span></span></li>
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('category.list') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Category management</span></a></li>
+												@if(Auth::user()->user_type == 'administrator')
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('category.add') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Add Category</span></a></li>
+											     @endif
 											</ul>
 										</div>
 									</li>
@@ -109,7 +111,9 @@
 											<ul class="kt-menu__subnav">
 												<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Subcategory List</span></span></li>
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('subcategory.list') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Subcategory management</span></a></li>
+												@if(Auth::user()->user_type == 'administrator')
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{ route('subcategory.add') }}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Add Subcategory</span></a></li>
+											   @endif
 											</ul>
 										</div>
 									</li>
@@ -121,7 +125,9 @@
 											<ul class="kt-menu__subnav">
 												<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Product List</span></span></li>
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{route('product.list')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Product List</span></a></li>
+												@if(Auth::user()->user_type == 'administrator')
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{route('product.add')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Add product</span></a></li>
+											      @endif
 											</ul>
 										</div>
 									</li>
@@ -131,8 +137,10 @@
 										</span><span class="kt-menu__link-text">Order Management</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
 										<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
 											<ul class="kt-menu__subnav">
+											@if( check_permission('orders.list') )
 												<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Order List</span></span></li>
-												<li class="kt-menu__item " aria-haspopup="true"><a href="" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Order List</span></a></li>
+												<li class="kt-menu__item " aria-haspopup="true"><a href="{{route('order.list')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Order List</span></a></li>
+											@endif
 											</ul>
 										</div>
 									</li>
@@ -143,8 +151,10 @@
 										<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
 											<ul class="kt-menu__subnav">
 												<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span class="kt-menu__link"><span class="kt-menu__link-text">Coupon List</span></span></li>
+												@if(Auth::user()->user_type == 'administrator')
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{route('coupon.list')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Coupon List</span></a></li>
 												<li class="kt-menu__item " aria-haspopup="true"><a href="{{route('coupon.add')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span class="kt-menu__link-text">Add Coupon</span></a></li>
+												@endif
 											</ul>
 										</div>
 									</li>

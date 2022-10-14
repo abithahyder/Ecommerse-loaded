@@ -132,7 +132,9 @@
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         &nbsp;
-                        <?php
+                       @if($data)
+                        @php
+                        if($data){
                             if( $data['active_gateway_type'] &&  $data['active_gateway_type'] == 'stripe' ) {
                                 $status = "Active";
                                 $class  = "success";
@@ -140,8 +142,10 @@
                                 $status = "Inactive";
                                 $class  = "danger";
                             }
-                        ?>
+                        }
+                       @endphp
                         <button type="button" class="btn btn-sm btn-{{ $class }} btn-bold">{{ $status }}</button>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -189,7 +193,9 @@
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         &nbsp;
+                        @if($data)
                         <?php
+                        
                             if( $data['active_gateway_type'] &&  $data['active_gateway_type'] == 'razorpay' ) {
                                 $status = "Active";
                                 $class  = "success";
@@ -197,8 +203,10 @@
                                 $status = "Inactive";
                                 $class  = "danger";
                             }
+                       
                         ?>
                         <button type="button" class="btn btn-sm btn-{{ $class }} btn-bold">{{ $status }}</button>
+                     @endif
                     </div>
                 </div>
             </div>
@@ -246,7 +254,9 @@
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         &nbsp;
+                        @if($data)
                         <?php
+                        
                             if( $data['active_gateway_type'] &&  $data['active_gateway_type'] == 'paypal' ) {
                                 $status = "Active";
                                 $class  = "success";
@@ -254,8 +264,10 @@
                                 $status = "Inactive";
                                 $class  = "danger";
                             }
+                        
                         ?>
                         <button type="button" class="btn btn-sm btn-{{ $class }} btn-bold">{{ $status }}</button>
+                    @endif
                     </div>
                 </div>
             </div>
@@ -309,6 +321,8 @@
                 <div class="kt-portlet__head-wrapper">
                     <div class="kt-portlet__head-actions">
                         &nbsp;
+                        
+                        @if($data)
                         <?php
                             if( $data['active_gateway_type'] &&  $data['active_gateway_type'] == 'paytm' ) {
                                 $status = "Active";
@@ -317,8 +331,11 @@
                                 $status = "Inactive";
                                 $class  = "danger";
                             }
+                        
                         ?>
+                        
                         <button type="button" class="btn btn-sm btn-{{ $class }} btn-bold">{{ $status }}</button>
+                    @endif
                     </div>
                 </div>
             </div>

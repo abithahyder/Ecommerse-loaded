@@ -6,6 +6,7 @@ use App\cart;
 use App\Client;
 use App\ClientAddress;
 use App\country;
+use App\Coupons;
 use App\delivery_charge;
 use App\Order;
 use App\Ordermaster;
@@ -132,9 +133,7 @@ class MainController extends Controller
         $id =Auth::user()->id;
         $cart = cart::where('user_id','=',$id)->get();
         $count = cart::where('user_id','=',$id)->count();
-        $country=country::all();
-        $states=states::all();
-        return view('home.checkout',compact('cart','count','country','states'));
+        return view('home.checkout',compact('cart','count'));
     }
 
     public function checkoutsave(Request $request){
@@ -235,10 +234,109 @@ class MainController extends Controller
             }catch (\Throwable $th) {
                 DB::rollback();
                 
-                return redirect()->back()->with('message' , 'Something went wrong $th');
+                return redirect()->back()->with('message' , 'Something went wrong '.$th->getMessage());
             }
             DB::commit();
                       
-        return redirect()->back()->with('message','We have Received your order.we will connect with you soon...');
+        return redirect()->back()->with('message','We have Received your order Please Continue to Checkout for Order Confirmation');
     }
+
+    public function placeorder(Request $request){
+       
+        $user=Auth::user();
+        $userid=$user->id;
+        $data =Cart::where('user_id','=',$userid)->get();
+        $orderinvoice=DB::table('orders')->latest()->first();
+        if($orderinvoice!=""){
+            $invoice=$orderinvoice->invoice_number;
+            $invoice++;
+            $orderno=$orderinvoice->or_no;
+            $orderno++;
+        }
+        else{
+          $invoice='#101-11-0';
+          $orderno='OR-ID-00000';
+           }
+       $total_items=0;
+       $total_price=0;
+       date_default_timezone_set("Asia/Calcutta");
+       $date =date("Y-m-d H:i:s");
+       DB::beginTransaction();
+       try{
+        foreach($data as $data){
+            $total_items++;
+            $total_price=$total_price+$data->product->p_sale_price;
+            $ordermodel = new Order();
+                         
+            $ordermodel->invoice_number	=$invoice;
+            $ordermodel->or_no =$orderno;
+            $ordermodel->u_id=$data->user_id;
+            $ordermodel->p_id=$data->p_id;
+            $ordermodel->price=$data->product->p_sale_price;
+            $ordermodel->qty=$data->taken_qty;
+            $ordermodel->name=$data->product->p_name;
+            $ordermodel->payment_mode="";
+            $ordermodel->pay_status="pending";
+            $ordermodel->delivery_status="processing";
+            $ordermodel->oim_image=$data->product->getMedia('product')->first()->getDiskPath();
+            $ordermodel->save();
+            $cartid=$data->cart_id;
+            $cart=Cart::findorFail($cartid);
+            $cart->delete();
+
+         }
+        //  $chargem=delivery_charge::where('dc_postcode','=',$request->spost)->first();
+        $sid=$request->spost;
+        $chargem=DB::table('delivery_charges') ->where('dc_postcode', '=', $sid)->first();
+        if($chargem!=""){
+            $charge=$chargem->dc_price;
+        }
+        else{
+            $charge=0;
+        }
+            
+            $grand_total = $total_price + $charge;
+              $ordermas=new Ordermaster();
+               $ordermas->om_u_id=$userid;
+               $ordermas->om_or_id_no=$orderno;
+               $ordermas->om_date=$date;
+               $ordermas->om_status="ordering";
+               $ordermas->om_total=$total_price;
+               $ordermas->total_items=$total_items;
+               $ordermas->or_invoice_number=$invoice;
+               $ordermas->om_grand_total=$grand_total;
+               $ordermas->payment="";
+               $ordermas->delivery_charge=$charge;
+               $ordermas->save();
+            }catch (\Throwable $th) {
+                DB::rollback();
+                
+                return redirect()->back()->with('message' , 'Something went wrong '.$th->getMessage());
+            }
+            DB::commit();
+                      
+        return redirect()->checkout()->with('message','We have Received your order Please Continue to Checkout for Order Confirmation');
+    }
+    
+
+    public function applycoupon(Request $request){
+        if($request->reedemcode){
+            $coupon=$request->coupon_code;
+            $coupondetails=Coupons::where('cm_code',$coupon)->first();
+            if(!empty($coupondetails)){
+              $usage=$coupondetails->cm_usage_limit - $coupondetails->cm_usage_count;
+              if($usage>0){
+               $discount =applyCoupon($coupondetails,$request->coupon_code);
+               $orderm=Ordermaster::findorFail($request->ormid);
+               $grand_total=$orderm->om_grand_total;
+               $orderm->om_discount=$orderm->om_discount+$discount;
+               $orderm->om_grand_total=$grand_total-$discount;
+               $orderm->update();
+              }
+          }
+        }
+        return redirect()->back();
+   
+    
+       }
 }

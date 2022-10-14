@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Order;
 use App\Ordermaster;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTables;
 
 class OrderControllers extends Controller
@@ -95,5 +97,70 @@ class OrderControllers extends Controller
        ->rawColumns(['action' => 'action','number' => 'number','cname' => 'cname','om_status' => 'om_status'])
        ->make(true);
    }
+
+ public function itempaystatusUpdate(Request $request){
+    $validate = $request->validate([
+        'status'   => 'required',
+       
+    ],[],[
+        'status'   => 'items',
+      
+    ]);
+    
+    if (request('status')) {
+        $status=request('status');
+        DB::beginTransaction();
+        foreach($status as $item){
+            if($item==0){
+              
+            }
+            else{
+            $order = Order::find($item);
+        $order->pay_status= "Paid";
+        $order->update();
+            }
+            DB::commit();
+        }
+                
+        echo ($order ) ? true :  false;
+        return true;
+    }
+
+    echo false;
+    return;
+
+ }
+ public function itemdelivstatusUpdate(Request $request){
+    $validate = $request->validate([
+        'status'   => 'required',
+       
+    ],[],[
+        'status'   => 'items',
+      
+    ]);
+    
+    if (request('status')) {
+        $status=request('status');
+        DB::beginTransaction();
+        foreach($status as $item){
+            if($item==0){
+              
+            }
+            else{
+            $order = Order::find($item);
+        $order->delivery_status= "Delivered";
+        $order->update();
+            }
+            DB::commit();
+        }
+                
+        echo ($order ) ? true :  false;
+        return true;
+    }
+
+    echo false;
+    return;
+
+ }
 
 }

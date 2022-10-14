@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\subcategory as productcategory;
-
+use App\subcategory as AppSubcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Yajra\DataTables\DataTables;
@@ -147,7 +147,7 @@ class SubCategory extends Controller
         if(!$request->ajax())
         return abort(404);
 
-        $subcategory = productcategory::select('id','cid','Product_category_name','product_category_image')->orderBy('id','desc');
+        $subcategory = productcategory::select('id','cid','Product_category_name','product_category_image','status')->orderBy('id','desc');
 
         return DataTables::of($subcategory)
             ->addColumn('action', function ($subcategory) {
@@ -169,8 +169,24 @@ class SubCategory extends Controller
             }
             return null;
         })
+        ->addColumn('status', function ($subcategory) {
+            return '<span class="kt-switch kt-switch--sm kt-switch--icon kt-switch--success kt-switch--outline">
+                        <label>
+                            <input type="checkbox" '.(check_permission('adminEdit') ? '' : 'disabled').' class="chkbox_active"  '. ($subcategory->status == 'active' ? 'checked' : '') .' value="'.(check_permission('adminEdit') ? $subcategory->id : '').'">
+                            <span></span>
+                        </label>
+                    </span>';
+        })
         
-        ->rawColumns(['action' => 'action', 'parent'=>'parent' ,'image' => 'image'])
+        ->rawColumns(['action' => 'action', 'parent'=>'parent' ,'image' => 'image','status'=>'status'])
         ->make(true);
+    }
+    public function statusChange(Request $request)
+    {
+        if(!$request->ajax()){
+            return abort(404);
+        }
+        $affected = productcategory::where('id', request('id'))->update(array('status' => request('status')));
+        echo ($affected > 0) ? true :  false;
     }
 }

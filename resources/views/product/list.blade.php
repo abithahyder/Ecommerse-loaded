@@ -61,18 +61,18 @@
                 <div class="form-group row">
                     <div class="col-lg-4">
                         <label>Category:</label>
-                        <select class="form-control category-filter"  name="category" >
+                        <select class="form-control category-filter"  name="category" id="category">
                             <option value="" >-- Select category --</option>
                             @foreach ($categoryList as $item)
-                                <option value="{{ $item->cat_id }}" >{{ $item->cat_title }}</option>
+                                <option value="{{ $item->id }}" >{{ $item->category_name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="col-lg-4">
                         <label>Sub Category:</label>
-                        <select class="form-control category-filter"  name="sub_category" >
+                        <select class="form-control category-filter"  name="sub_category" id="subcategory" >
                             <option value="" >-- Select sub category --</option>
-                           
+                            
                         </select>
                     </div>
                 </div>

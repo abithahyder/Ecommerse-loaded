@@ -187,3 +187,104 @@ $('#admin_add_form').validate({
       form.submit();
     }
 });
+
+$("#itemvalues").click(function() {
+    $("input[type=checkbox]").prop("checked", $(this).prop("checked"));
+  });
+  
+  $("input[type=checkbox]").click(function() {
+    if (!$(this).prop("checked")) {
+      $("#itemvalues").prop("checked", false);
+    }
+  });
+  $('#change-delivery').click(function(){
+      itemchange= new Array();
+   $('input[name="itemstatus[]"]:checked').each(function(){
+    itemchange.push($(this).val());
+});
+
+if(itemchange){
+$.ajax({
+    url : base_url+'/order/itemdelistatus-update',
+    type : 'POST',
+    data : { status : itemchange },
+    dataType:'json',
+    beforeSend: function() {
+        swal.fire({
+            title: 'Please Wait..!',
+            text: 'Is working..',
+            onOpen: function() {
+                swal.showLoading()
+            }
+        })
+    },
+    success : function(data) { 
+        swal.fire({
+            position: 'top-right',
+            type: 'success',
+            title: 'Status update successfully',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    },
+    complete: function() {
+        swal.hideLoading();
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+        swal.hideLoading();
+        swal.fire("!Opps ", "Something went wrong, try again later", "error");
+    }
+});
+}
+else{
+    swal.fire("!Opps ", "Something went wrong, try again later", "error");
+}
+ 
+  });
+  
+  $('#change-payment').click(function(){
+    itemchange= new Array();
+ $('input[name="itemstatus[]"]:checked').each(function(){
+  itemchange.push($(this).val());
+});
+
+if(itemchange){
+$.ajax({
+  url : base_url+'/order/itempaymentstatus-update',
+  type : 'POST',
+  data : { status : itemchange },
+  dataType:'json',
+  beforeSend: function() {
+      swal.fire({
+          title: 'Please Wait..!',
+          text: 'Is working..',
+          onOpen: function() {
+              swal.showLoading()
+          }
+      })
+  },
+  success : function(data) { 
+      swal.fire({
+          position: 'top-right',
+          type: 'success',
+          title: 'Status update successfully',
+          showConfirmButton: false,
+          timer: 2000
+      });
+  },
+  complete: function() {
+      swal.hideLoading();
+  },
+  error: function(jqXHR, textStatus, errorThrown) {
+      alert(errorThrown);
+      swal.hideLoading();
+      swal.fire("!Opps ", "Something went wrong, try again later", "error");
+  }
+});
+}
+else{
+  swal.fire("!Opps ", "Something went wrong, try again later", "error");
+}
+
+});

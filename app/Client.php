@@ -5,10 +5,13 @@ use Plank\Mediable\Mediable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Client extends Authenticatable
 {
+    use HasApiTokens;
     use HasFactory, Mediable;
+   
     protected $table = 'clients';
     protected $fillable = ['c_name', 'c_email','c_pwd','c_status','c_fcm_token'];
     protected  $primaryKey = 'c_id';

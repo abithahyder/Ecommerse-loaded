@@ -69,3 +69,43 @@
 
 <!--end::Layout Skins -->
 <link rel="shortcut icon" href="{{ asset('./assets/media/logos/favicon.ico')}}" />
+<style>
+	 .multipleSelection {
+            width: auto;
+			height: auto;
+          
+        }
+  
+        .selectBox {
+            position: relative;
+			margin: 1px;
+        }
+  
+        .selectBox select {
+            width: 100%;
+           
+        }
+  
+        .overSelect {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+			margin: 1rem;
+			
+        }
+  
+        #checkBoxes {
+            display: none;
+            border: 1px #8DF5E4 solid;
+		
+			
+        }
+  
+        #checkBoxes label {
+            display: block;
+        }
+  
+       
+</style>

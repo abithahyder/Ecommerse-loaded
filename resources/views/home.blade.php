@@ -28,7 +28,7 @@
                                     <div class="kt-widget17__stats">
                                         <div class="kt-widget17__items">
                                         <div class="kt-widget17__item">
-                                                <a href="#">
+                                                <a href="{{route('client.list')}}">
                                                     <span class="kt-widget17__icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--warning">
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -47,7 +47,7 @@
                                                 </a>
                                             </div>
                                             <div class="kt-widget17__item">
-                                                <a href="#">
+                                                <a href="{{route('order.list')}}">
                                                     <span class="kt-widget17__icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--success">
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -65,7 +65,7 @@
                                                 </a>
                                             </div>
                                             <div class="kt-widget17__item">
-                                                <a href="#">
+                                                <a href="{{route('product.list')}}">
                                                 <span class="kt-widget17__icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--success">
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -83,7 +83,7 @@
                                                 </a>
                                             </div>
                                             <div class="kt-widget17__item">
-                                                <a href="#">
+                                                <a href="{{route('coupon.list')}}">
                                                 <span class="kt-widget17__icon">
                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" class="kt-svg-icon kt-svg-icon--success">
                                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">

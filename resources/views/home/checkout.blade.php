@@ -61,26 +61,26 @@
            
         </li>
        @endforeach
-        
-        <!-- <li class="list-group-item d-flex justify-content-between bg-light">
+       
+        <li class="list-group-item d-flex justify-content-between bg-light">
           <div class="text-success">
             <h6 class="my-0">Promo code</h6>
             <small>EXAMPLECODE</small>
           </div>
           <span class="text-success">-$5</span>
-        </li> -->
+        </li>
         <li class="list-group-item d-flex justify-content-between">
           <span>Total </span>
           <strong>{{$total_prize}}</strong>
         </li>
       </ul>
 
-      <form class="card p-2">
+      <form class="card p-2" action="{{route('coupon.apply')}}" method="post">
       @csrf
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Promo code">
+          <input type="text" class="form-control" name="coupon_code" placeholder="Promo code">
           <div class="input-group-append">
-            <button type="submit" class="btn btn-secondary">Redeem</button>
+            <button type="submit" name="redeemcode" class="btn btn-secondary">Redeem</button>
           </div>
         </div>
       </form>

@@ -49,7 +49,8 @@
         </div>
     @endif
     <form class="" action="{{ route('product.save') }}" enctype="multipart/form-data" id="admin_add_form" method="post" >
-        <div class="kt-portlet form">
+      
+    <div class="kt-portlet form">
             <div class="kt-portlet__head kt-portlet__head--lg">
                 <div class="kt-portlet__head-label">
                     <span class="kt-portlet__head-icon">
@@ -98,8 +99,10 @@
                     </div>
                     <div class="col-lg-4">
                         <label>Available Stock:</label>
+                        
                         <input type="number" name="p_stock" value="{{ $data->p_stock ?? '' }}"  placeholder="Enter Available Stock" class="form-control" >
                     </div>
+    
                     <div class="col-lg-4">
                         <label>Status:</label>
                         <select class="form-control"  name="p_status" >
@@ -119,18 +122,49 @@
                         <textarea name="p_desc" class="form-control" cols="30" rows="4" placeholder="Enter description">{{ $data->p_desc ?? '' }}</textarea>
                     </div>
                     <div class="col-lg-4">
+                        <label>Available Pincodes:</label>
+                        <div class="multipleSelection" id="selpinval">
+            <div class="selectBox " 
+                onclick="showCheckboxes()">
+                <select class="form-control">
+                    <option>Select options</option>
+                </select >
+                <div class="overSelect"></div>
+            </div>
+   
+            <div id="checkBoxes">
+            <label for="first">
+            @php $pincodes =explode(',' ,$data->p_availability); @endphp
+                    <input type="checkbox" name="pinselect[]" id="checkpinAll" value="0" {{ (!empty($data->p_availability) && (in_array("0",$pincodes))) ? 'checked' : '' }}/>
+                    select All
+                </label>
+                @foreach($pin as $pin)
+                
+                 <label for="first">
+                    <input type="checkbox" name="pinselect[]" id="itemvalues" value="{{$pin->dc_id}}" {{ (!empty($data->p_availability) && (in_array($pin->dc_id,$pincodes))) ? 'checked' : '' }}/>
+                    
+                    {{$pin->dc_postcode}}
+                </label>
+                @endforeach
+           </div>
+        </div>
+       <input type="hidden" value="" id="pinvalues" name="p_availability"/>
+                       
+                    </div>
+                    <div class="col-lg-4">
                         <label>Images:</label>
                         <input type="file" name="images[]" multiple class="form-control" >
                     </div>
+                    
                 </div>
-                <!-- <div class="form-group row">
+                <div class="form-group row">
                     <div class="col-lg-4">
                         <label class="kt-checkbox kt-checkbox--brand">
                             <input type="checkbox" id="multi-option" value="1" {{ (!empty($data->p_multi_option) && $data->p_multi_option == '1') ? 'checked' : '' }} name="p_multi_option">This product has multiple options, like diffrent sizes or colors
                             <span></span>
                         </label>
                     </div>
-                </div> -->
+                </div>
                 @if ( $data && $data->hasMedia('product') )
                     <h3 for="">Images</h3><br>
                     <div class="form-group row ">
@@ -148,7 +182,7 @@
                 @endif
             </div>
         </div>
-        @if ( !empty($data->p_multi_option) && $data->p_multi_option == 1 )
+        @if ( !empty($data->p_multi_option) && $data->p_multi_option == '1' )
         <div class="kt-portlet kt-portlet--collapsed" data-ktportlet="true" id="kt_portlet_tools_1">
             <div class="kt-portlet__head">
                 <div class="kt-portlet__head-label">
@@ -165,14 +199,16 @@
             <div class="kt-portlet__body"  style="">
                 <div class="kt-portlet__content">
                     <div class="">
-                        @if( !empty($data->p_multi_option) && $data->p_multi_option == '1' )
-                            @php
-                                $skuList = $data->sku;
-                            @endphp
-                            @foreach ($data->skuOption as $key => $item)
-                            @php
-                                $value = \App\sku_value::leftJoin('variant_options','sku_values.skuv_vo_id','variant_options.vo_id')->where(['skuv_sku_id'=> $item->skuv_sku_id, 'skuv_p_id' => $item->skuv_p_id ])->pluck('variant_options.vo_name')->toArray();
-                            @endphp
+                        @if(!empty($data->p_multi_option) && $data->p_multi_option == '1' )
+                            <?php
+                                $skuList = $data->sku;                                                                 
+                            ?>
+                            @foreach($data->skuOption as $key => $item)
+                              
+                            <?php
+                                                      
+                             $value = App\sku_value::leftJoin('variant_options','sku-values.skuv_vo_id','variant_options.vo_id')->where(['skuv_sku_id'=> $item->skuv_sku_id, 'skuv_p_id' => $item->skuv_p_id ])->pluck('variant_options.vo_name')->toArray();
+                            ?>                  
                                 <div class="form-group row remove-option">
                                     <div class="col-lg-2 col-form-label-lg">
                                         <label class="ml-5"> {{ implode( ',', $value ) }}  </label>

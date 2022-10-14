@@ -43,13 +43,13 @@ return [
 
         'api' => [
             'driver' => 'token',
-            'provider' => 'users',
+            'provider' => 'clients',
             'hash' => false,
         ],
-       'clients' => [
-        'driver' =>'session',
-        'provider'=>'clients',
-       ],
+    //    'clients' => [
+    //     'driver' =>'session',
+    //     'provider'=>'clients',
+    //    ],
     ],
 
     /*

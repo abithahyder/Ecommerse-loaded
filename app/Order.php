@@ -18,5 +18,8 @@ class Order extends Model
     {
     	return $this->belongsTo('App\Ordermaster');
     }
+    public function skus(){
+        return $this->belongsTo('App\skus','sku','sku_id');
+    }
    
 }

@@ -17,7 +17,7 @@ class AuthController extends Controller
     {   
         $validator = Validator::make($request->all(), [
             'c_name'  => 'required',
-            'c_email' => 'email|required|unique:client_master',
+            'c_email' => 'email|required|unique:clients',
             'c_pwd'   => 'required',
             'confirm_password' => 'required',
             'c_pwd'    => 'required|same:confirm_password',
@@ -42,7 +42,7 @@ class AuthController extends Controller
         }
         $ClientModel = Client::create($validatedData);
 
-        $accessToken = $ClientModel->createToken('authTokenx')->accessToken;
+        $accessToken = $ClientModel->createToken('authToken')->plainTextToken;
 
         return response([ 
             'status' => true,
@@ -69,7 +69,7 @@ class AuthController extends Controller
             return response()->json([
                 'status'    => true,
                 'message'   => 'Congratulations ! You are successfully logged in',
-                'token'     => $client->createToken('authTokenx')->accessToken,
+                'token'     => $client->createToken('authToken')->plainTextToken,
             ], 200);
         }else {
             return response()->json([
@@ -104,7 +104,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), [
             'c_name'  => 'required',
-            'c_email'  => 'required|email|unique:client_master,c_email,'.$client->c_id.',c_id',
+            'c_email'  => 'required|email|unique:clients,c_email,'.$client->c_id.',c_id',
             'image'   => 'required',
         ],[],[
             'c_name'  => 'Username',
@@ -125,7 +125,7 @@ class AuthController extends Controller
             $client->c_email = $request->c_email;
             $client->save();
             if( $request->file('image') ){
-                $media = \MediaUploader::fromSource($request->file('image'))->toDirectory('client')->useHashForFilename()->upload();
+                $media = MediaUploader::fromSource($request->file('image'))->toDirectory('client')->useHashForFilename()->upload();
                 $client->syncMedia($media, ['client']);
             }
             return response()->json([ 
@@ -237,6 +237,7 @@ class AuthController extends Controller
             'ca_address_line_1' => 'required',
             'ca_address_line_2' => 'nullable',
             'ca_mobile'         => 'required|numeric|min:10',
+            'ca_altr_num'       => 'nullable',
             'ca_city'           => 'required',
             'ca_state'          => 'required',
             'ca_country'        => 'required',
@@ -249,6 +250,7 @@ class AuthController extends Controller
             'ca_state'          => 'State',
             'ca_country'        => 'Country',
             'ca_pincode'        => 'Pincode',
+            'ca_altr_num'       =>'Alternate Number',
         ]);
 
         if ($validator->fails()) {

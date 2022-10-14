@@ -287,7 +287,7 @@ $(document).on('click','.delete-sku', function () {
                     swal.fire({
                         position: 'top-right',
                         type: 'success',
-                        title: 'Images  deleted successfully',
+                        title: 'product variant deleted successfully',
                         showConfirmButton: false,
                         timer: 2000
                     });
@@ -309,7 +309,7 @@ $(document).on('click','.delete-sku', function () {
 $(document).on('click','.update-sku', function () {
     event.preventDefault();
     var tag_id = $(this).attr('data-id');
-    var thiss = $(this);
+     var thiss = $(this);
     
     if(tag_id == ''){
         swal.fire({
@@ -391,3 +391,36 @@ $('#admin_add_form').validate({
       form.submit();
     }
 });
+
+//select-box
+var show = true;
+  
+function showCheckboxes() {
+    var checkboxes = 
+        document.getElementById("checkBoxes");
+
+    if (show) {
+        checkboxes.style.display = "block";
+        show = false;
+    } else {
+        checkboxes.style.display = "none";
+        show = true;
+    }
+}
+
+
+$("#checkpinAll").click(function() {
+    $("input[name='pinselect[]']").prop("checked", $(this).prop("checked"));
+
+  });
+
+  $('#selpinval').click(function(){
+    items = new Array();
+    $('input[name="pinselect[]"]:checked').each(function(){
+        items.push($(this).val());
+          });
+   $('#pinvalues').val(items);
+    
+  });
+
+  

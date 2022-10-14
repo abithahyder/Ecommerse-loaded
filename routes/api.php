@@ -25,26 +25,29 @@ Route::post('forgot-password', 'API\AuthController@forgot_pwd');
 Route::post('reset-password', 'API\AuthController@resetPwd');
 
 Route::group(['middleware'=>['auth:sanctum']],function(){
-    // Route::get('/products',[ProductController::class,'index']);
-
-    // Route::get('/products/{id}',[ProductController::class,'show']);
     Route::get('/category','API\CategoryController@index');
     Route::get('/category/{id}','API\CategoryController@show');
     Route::post('/category','API\CategoryController@store');
-    Route::get('/productcategory','ProductCategoryController@index');
-    Route::get('/productcategory/{id}','ProductCategoryController@show');
-    Route::post('/productcategory',[ProductCategoryController::class,'store']);
-
-    Route::post('/products',[ProductController::class,'store']);
-    Route::put('/products/{id}/update',[ProductController::class,'update']);
-    Route::delete('/products/{id}',[ProductController::class,'destroy']);
-    Route::put('/category/{id}/update','API\CategoryController@update');
-    Route::delete('/category/{id}','API\CategoryController@destroy');
-    Route::put('/productcategory/{id}/update',[ProductCategoryController::class,'update']);
-    Route::delete('/productcategory/{id}',[ProductCategoryController::class,'destroy']);
-
-    Route::get('/cart',[CartController::class,'index']);
-    Route::get('/products/{title}',[ProductController::class,'searchpro']);
+    Route::get('/productcategory','API\ProductCategoryController@index');
+    Route::get('/productcategory/{id}','API\ProductCategoryController@show');
+    
+   Route::get('/products','API\ProductController@index');
+   Route::get('/product-details','API\ProductController@productdetails');
+   Route::post('/add_to_wishlist','API\ProductController@addwhishlist');
+   Route::post('/add_review','API\ProductController@addReview');
+   Route::post('/add_to_cart','API\CartController@addCart');
+   Route::post('/remove_from_cart','API\CartController@removeCartItem');
+   Route::post('/change_qty','API\CartController@updatecart');
+   Route::post('/delivery_charge','API\OrderController@getdeleiverycharge');
+   Route::post('/verify_coupons','API\OrderController@checkcoupon');
+   Route::post('/view_cart','API\CartController@viewcart');
+   Route::post('/view_availability','API\ProductController@availability');
+  // Route::post('/apply_coupons','API\OrderController@applycoupon');
+   Route::post('/place_order','API\OrderController@add_order');
+   Route::get('/order_list','API\OrderController@orderList');
+   Route::post('/order_details','API\OrderController@orderDetails');
+   Route::get('/products/getsku','API\ProductController@getsku');
+   Route::post('/products/product_available','API\ProductController@availablepin');
 
     Route::post('/logout',[AuthController::class,'logout']);
 });

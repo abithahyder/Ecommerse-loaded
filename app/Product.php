@@ -14,7 +14,7 @@ class Product extends Model
 
     
     protected $table = 'products';
-    protected $fillable = ['p_cat_parent_id', 'p_cat_id', 'p_name', 'p_desc', 'p_price', 'p_sale_price', 'p_status','p_short_desc','p_multi_option','p_stock'];
+    protected $fillable = ['p_cat_parent_id', 'p_cat_id', 'p_name', 'p_desc', 'p_price', 'p_sale_price', 'p_status','p_short_desc','p_multi_option','p_stock','p_availability'];
     protected $primaryKey = 'p_id';
 
     protected $hidden = [
@@ -68,8 +68,9 @@ class Product extends Model
 
     public function skuOption()
     {
-        return $this->hasMany('App\sku_value','skuv_id','skuv_p_id','p_id')->groupBy('skuv_sku_id');
+        return $this->hasMany('App\sku_value','skuv_p_id','p_id')->groupBy('skuv_sku_id');
     }
+
 
     public function LatestReviews()
     {
@@ -78,7 +79,7 @@ class Product extends Model
 
     public function userLiked()
     {
-        return $this->hasMany('App\user_wishlist','uw_p_id','p_id')->where('uw_c_id',Auth::user()->c_id);
+        return $this->hasMany('App\user_whishlist','uw_p_id','p_id')->where('uw_c_id',Auth::user()->c_id);
     }
 
     public function totalReview()

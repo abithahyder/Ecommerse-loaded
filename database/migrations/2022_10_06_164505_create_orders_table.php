@@ -19,6 +19,8 @@ class CreateOrdersTable extends Migration
             $table->string('invoice_number');
             $table->string('qty');
             $table->integer('p_id');
+             $table->string('p_vo_id')->nullable();
+            $table->integer('sku')->nullable();
             $table->integer('u_id');
             $table->string('name')->nullable();
             $table->string('oim_image')->nullable();

@@ -3,7 +3,10 @@ $('.category-filter').change(function (e) {
     e.preventDefault();
     table.ajax.reload();
 });
-
+$('.subcategory-filter').change(function (e) { 
+    e.preventDefault();
+    table.ajax.reload();
+});
 $(document).on('click','.filter-show', function () {
     $( '.filter-body' ).stop().slideToggle();
 });
@@ -65,7 +68,7 @@ $(document).ready(function() {
            { data: 'p_price' },
            { data: 'p_sale_price' },
            { data: 'image' ,orderable: false, searchable: false},
-           { data: 'p_status' },
+           { data: 'status' },
            { data: 'action', name: 'action', orderable: false, searchable: false},
        ],
        "order": [[ 0, "desc" ]]
@@ -135,6 +138,96 @@ $(document).on('click','.delete-single', function () {
                     swal.fire("!Opps ", "Something went wrong, try again later", "error");
                 }
             });
+        }
+    });
+});
+$(document).on('change', '.chkbox_active', function () {
+    if(!$(this).val()){
+        swal.fire({
+            title: 'Something went wrong, try again later',
+            type: 'error',
+            animation: false,
+            customClass: 'animated tada'
+        })
+        return false;
+    }
+    var status = 'inactive'
+    if ($(this).is(":checked")) {
+        status = 'active'
+    }
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });  
+    $.ajax({
+        url : base_url+'/product/status-change',
+        type : 'POST',
+        data : {id:$(this).val(), status : status},
+        dataType:'json',
+        beforeSend: function() {
+            swal.fire({
+                title: 'Please Wait..!',
+                text: 'Is working..',
+                onOpen: function() {
+                    swal.showLoading()
+                }
+            })
+        },
+        success : function(data) { 
+            swal.fire({
+                position: 'top-right',
+                type: 'success',
+                title: 'Product status changed successfully',
+                showConfirmButton: false,
+                timer: 2000
+            });
+            table.ajax.reload();
+        },
+        complete: function() {
+            swal.hideLoading();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            swal.hideLoading();
+            swal.fire("!Opps ", "Something went wrong, try again later", "error");
+            table.ajax.reload();
+        }
+    });
+
+});
+$(document).on('change','#category', function () {
+    var id = $(this).val();
+    var cat = $('#subcategory').data('category');
+    $('#subcategory option:not(:first)').remove();
+    $.ajax({
+        url : base_url+'/product/sub-category',
+        type : 'POST',
+        data : {id:id },
+        dataType:'json',
+        beforeSend: function() {
+            
+        },
+        success : function(res) { 
+            if( res.status == true ){
+                $.each(res.data, function(key, value) {
+                    var selected = false;
+                    if( cat == value.id ){
+                        var selected = true;
+                    }
+                    $('#subcategory').append($("<option></option>").attr({value:value.id,selected:selected}).text(value.Product_category_name)); 
+               });
+            }else{
+                // swal.fire("!Opps ", , "error"); 
+            }
+            swal.hideLoading();
+        },
+        complete: function() {
+            swal.hideLoading();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            swal.hideLoading();
+            swal.fire("!Opps ", "Something went wrong, try again later", "error");
         }
     });
 });

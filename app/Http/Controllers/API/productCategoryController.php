@@ -2,39 +2,37 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Category;
 use App\Http\Controllers\Controller;
+use App\subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class productCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function index()
     {
+        
+
         $page = request('page',1);
         $per_page= request('per_page',12);
         $offset   = ( $page == 1 ) ? 0 : ( $page * $per_page ) - $per_page;
         $category = request('id',0);
-        $cat = Category::where('status','active')->get();
-        if($cat){
+        $pcat = subcategory::where('status','active')->get();
+        if($pcat){
            
         
             return response()->json([
                 'status'    => true,
-                'image_url' => 'uploads/category',
-                'data'   => $cat
+                'image_url' => 'uploads/subcategory/',
+                'data'   => $pcat
             ], 200);
         }
         return response()->json([
             'status'    => false,
             'message'   => 'No records found'
         ], 20);
-        
+      
+       
     }
 
     /**
@@ -58,8 +56,9 @@ class CategoryController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, [
-            'categoryname'=>'required',
-            'catimg'=>'required',
+            'product_categoryname'=>'required',
+            'pcatimg'=>'required',
+            'cid' => 'required',
            
         ]);
 
@@ -67,22 +66,20 @@ class CategoryController extends Controller
             return response()->json(['error' => $validator->errors(), 'error']);
         }
 
-       $catmodel = new Category();
-       $catname =$request->categoryname;
-       $image=$request->catimg;
-       $imagename=$catname.'.'.$image->getClientOriginalExtension();
-       $request->catimg->move('category',$imagename);
-    
-       $catmodel->category_image = $imagename; 
-       $catmodel->category_name = $catname;
-       $catmodel->save();
-      
+        $pcatmodel =new subcategory();
+            $pcatname=$request->product_categoryname;
+            $pcatmodel->Product_category_name = $pcatname ;
+             $pcatmodel->cid =$request->cid;
+             $image =$request->pcatimg;
+             $imagename=time().'.'.$image->getClientOriginalExtension();
+             $request->pcatimg->move('productcategory',$imagename);
+             $pcatmodel->product_category_image = $imagename;
+             $res= $pcatmodel->save();
 
-       
-        return response()->json([
+       return response()->json([
         "success" => true,
-        "message" => "Category Inserted Successfully",
-       
+        "message" => " Product Category Inserted Successfully",
+        "data" => $pcatname
         ]);
        
     }
@@ -95,8 +92,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-       $cat = Category::find($id);
-        return response()->json($cat);
+        $pcat =subcategory::find($id);
+         return response()->json($pcat);
+        
     }
 
     /**
@@ -119,27 +117,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $catmodel = Category::find($id);
-        $catname =$request->categoryname;
-        if($request->catimg){
-         $image=$request->catimg;
-         $imagename=$catname.'.'.$image->getClientOriginalExtension();
-         $request->catimg->move('category',$imagename);
-    
-         $catmodel->category_image = $imagename; 
-        }
-        
-        $catmodel->category_name = $catname;
-        $catmodel->update();
-       
- 
-        
-         return response()->json([
-         "success" => true,
-         "message" => "Category Updated Successfully",
-        
-         ]);
-    }
+        $pcatmodel =new subcategory();
+            $pcatname=$request->product_categoryname;
+            $pcatmodel->Product_category_name = $pcatname ;
+             $pcatmodel->cid =$request->cid;
+             $image =$request->pcatimg;
+             $imagename=time().'.'.$image->getClientOriginalExtension();
+             $request->pcatimg->move('productcategory',$imagename);
+             $pcatmodel->product_category_image = $imagename;
+                  $res= $pcatmodel->update();
+                  return response()->json([
+                    "success" => true,
+                    "message" => " Product Category Updated Successfully",
+                    "data" => $pcatname
+                    ]);
+                }
 
     /**
      * Remove the specified resource from storage.
@@ -149,12 +141,16 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $catmodel =Category::find($id);
-        $catmodel->delete();
+        $pcatmodel=subcategory::find($id);
+        $pcatname=$pcatmodel->Product_category_name;
+        $pcatmodel->delete();
         return response()->json([
             "success" => true,
-            "message" => "Category Deleted Successfully",
-           
+            "message" => " Product Category Deleted Successfully",
+            "data" => $pcatname
             ]);
+
     }
+
+    
 }

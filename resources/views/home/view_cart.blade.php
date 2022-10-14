@@ -42,7 +42,7 @@
   <div class="container h-100">
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col">
-        <p><span class="h2">Shopping Cart </span><span class="h4">(1 item in your cart)</span></p>
+        <p><span class="h2">Shopping Cart </span><span class="h4">( item in your cart)</span></p>
 
         <div class="card mb-4">
           <div class="card-body p-4">

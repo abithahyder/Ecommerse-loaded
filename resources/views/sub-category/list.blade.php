@@ -82,6 +82,7 @@
                         <th>Title</th>
                         <th>Category</th>
                         <th>Images</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

@@ -80,12 +80,12 @@
                         <div class="kt-widget kt-widget--user-profile-1">
                             <div class="kt-widget__head">
                                 <div class="kt-widget__media">
-                                    <img src="{{ $data->user->hasMedia('client') ? $data->user->getMedia('client')->first()->getUrl() : null }}" alt="image">
+                                    <img src="{{ $data->usr->hasMedia('client') ? $data->usr->getMedia('client')->first()->getUrl() : null }}" alt="image">
                                 </div>
                                 <div class="kt-widget__content">
                                     <div class="kt-widget__section">
-                                        <a href="{{ route('client.edit',$data->user->c_id) }}" class="kt-widget__username">
-                                            {{ $data->user->c_name  }}
+                                        <a href="{{ route('client.edit',$data->usr->c_id) }}" class="kt-widget__username">
+                                            {{ $data->usr->c_name  }}
                                             {{-- <i class="flaticon2-correct kt-font-success"></i> --}}
                                         </a>
                                         {{-- <span class="kt-widget__subtitle">
@@ -102,11 +102,11 @@
                                 <div class="kt-widget__content">
                                     <div class="kt-widget__info">
                                         <span class="kt-widget__label">Email:</span>
-                                        <a href="{{ route('client.edit',$data->user->c_id) }}" class="kt-widget__data">{{ $data->user->c_email }}</a>
+                                        <a href="{{ route('client.edit',$data->usr->c_id) }}" class="kt-widget__data">{{ $data->usr->c_email }}</a>
                                     </div>
                                     {{-- <div class="kt-widget__info">
                                         <span class="kt-widget__label">Phone:</span>
-                                        <a href="#" class="kt-widget__data">{{ $data->user->c_email }}</a>
+                                        <a href="#" class="kt-widget__data">{{ $data->usr->c_email }}</a>
                                     </div>
                                     <div class="kt-widget__info">
                                         <span class="kt-widget__label">Location:</span>
@@ -121,6 +121,9 @@
 
                         <!--end::Widget -->
                     </div>
+
+
+                    
                 </div>
 
                 <!--end:: Widgets/Applications/User/Profile1-->
@@ -132,6 +135,7 @@
             <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
                 <div class="row">
                     <div class="col-xl-6">
+                        
 
                         <!--begin:: Widgets/Order Statistics-->
                         <div class="kt-portlet kt-portlet--height-fluid">
@@ -172,10 +176,77 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                           
+                                            
                                             <div class="kt-widget12__info">
                                                 <span class="kt-widget12__desc">Grand total</span>
                                                 <span class="kt-widget12__value">{{ $data->om_grand_total }}</span>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet kt-portlet--tabs kt-portlet--height-fluid">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Billing Address
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body">
+                                <div class="row">
+                                <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Name:</span>
+                                            <span class="kt-widget__data text-dark">{{$data->usr->c_name }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Address line 1:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->usraddrss->ca_address_line_1}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Address line 2:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->usraddrss->ca_address_line_2 }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Mobile:</span>
+                                            <span class="kt-widget__data text-dark">{{$data->usraddrss->ca_mobile,$data->usraddrss->altr_num }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">City:</span>
+                                            <span class="kt-widget__data text-dark">{{$data->usraddrss->ca_city }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">State:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->usraddrss->ca_state }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Country:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->usraddrss->ca_country }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Pincode:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->usraddrss->ca_pincode }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -196,6 +267,12 @@
                             </div>
                             <div class="kt-portlet__body">
                                 <div class="row">
+                                <div class="col-md-4">
+                                        <div class="kt-widget__info">
+                                            <span class="kt-widget__label ">Name:</span>
+                                            <span class="kt-widget__data text-dark">{{ $data->om_sname }}</span>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4">
                                         <div class="kt-widget__info">
                                             <span class="kt-widget__label ">Address line 1:</span>
@@ -275,37 +352,84 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox" name="itemstatus[]" id="itemvalues" value="0"/></th>
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Price</th>
+                                     
                                             
                                             <th>Qty</th>
                                             <th>Discount</th>
                                             <th>Total</th>
+                                            <th>Payment</th>
+                                            <th>Delivery</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                     
+                                     <?php
+
+use Illuminate\Support\Facades\DB;
+
+                                     $payflag=0;
+                                     $deliflag=0;
+                                     ?>
                                      
                                       @foreach($data->items as $item)
+                                      <?php
+                                      if($item->delivery_status!="Delivered"){
+                                        $deliflag=1;
+                                      }
+                                      if($item->pay_status!="Paid"){
+                                        $payflag=1;
+                                      }
+                                      ?>
+
                                       <tr>
-                                       
+                                       <td><input type="checkbox" name="itemstatus[]" id="itemvalue" value="{{$item->or_id}}"/></td>
                                         <td><img src="../uploads/{{$item->oim_image}}" width="40" height="40"/></td>
-                                         <td>{{$item->product->p_name}}</td>
-                                           <td>{{$item->product->p_price}}</td>
+                                         <?php 
+                                         if(!empty($item->sku)){
+                                            $skus = App\skus::where('sku_id','=',$item->sku)->first();
+                     
+                                           $pname=$skus->sku_name;
+                                            $pprice=$skus->sku_price;
+                                       
+                                            
+                                         }
+                                         else{
+                                           
+                                           $pname= $item->product->p_name;
+                                          $pprice= $item->product->p_price;
+                                         }
+                                        ?>
+                                        
+                                        <td>{{$item->name}}</td>
+                                           <td>{{$item->price}}</td>
                                            <td>{{$item->qty}}</td>
-                                           <td>{{$item->product->p_price - $item->product->p_sale_price}}</td>
-                                           <td>{{$item->price}}</td> 
+                                            <td>{{$item->discount}}</td>
+                                           <td>{{$item->total_price}}</td> 
+                                           <td>{{$item->pay_status}}</td>
+                                           <td>{{$item->delivery_status}}</td>
                                         </tr>
                                       @endforeach
-                                         <tr>
+                                        
                                         
                                             
-                                        </tr>
+                                       
                                      
                                     
                                     </tbody>
                                     <tfoot>
+                                        <tr>
+                                       <td colspan="2" >
+                                        @if($payflag==1) 
+                                        <button type="button" class="btn btn-primary" id="change-payment">Paid</button>
+                                        @endif
+                                        @if($deliflag==1)
+                                       <button type="button" class="btn btn-primary" id="change-delivery">Delivered</button></td>
+                                       @endif
+                                        </tr>
+                                    
                                         <tr>
                                             <td colspan="4" class="text-right">Total</td>
                                             <td >{{ $data->om_total }}</td>

@@ -158,23 +158,23 @@ function cache_permission()
 	
 }
 
-// function send_push_notification($data = null,$ios = null){
-// 	$key = env('FIREBASE_KEY');
-// 	if( $key ){
-// 		if($ios){
-// 			$response = Curl::to('https://fcm.googleapis.com/fcm/send')
-// 						->withData(json_encode($ios))
-// 						->withHeader('Authorization:key='.$key.'')
-// 						->withHeader('Content-Type:application/json')
-// 						->post();
-// 		}
-// 		return  $response = Curl::to('https://fcm.googleapis.com/fcm/send')
-// 					->withData(json_encode($data))
-// 					->withHeader('Authorization:key='.$key.'')
-// 					->withHeader('Content-Type:application/json')
-// 					->post();
-// 	}
-// }
+function send_push_notification($data = null,$ios = null){
+	$key = env('FIREBASE_KEY');
+	if( $key ){
+		if($ios){
+			$response = Curl::to('https://fcm.googleapis.com/fcm/send')
+						->withData(json_encode($ios))
+						->withHeader('Authorization:key='.$key.'')
+						->withHeader('Content-Type:application/json')
+						->post();
+		}
+		return  $response = Curl::to('https://fcm.googleapis.com/fcm/send')
+					->withData(json_encode($data))
+					->withHeader('Authorization:key='.$key.'')
+					->withHeader('Content-Type:application/json')
+					->post();
+	}
+}
 function orderStatusList($key = null)
 {
 	$list =  array(

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\delivery_charge;
 use App\Product;
 use App\sku_value;
 use App\skus;
@@ -19,8 +20,9 @@ class ProductController extends Controller
 {
     public function index(){
         $categoryList = Category::all();
+        $SubcategoryList=subcategory::all();
                
-        return view('product.list',compact( 'categoryList'));
+        return view('product.list',compact( 'categoryList','SubcategoryList'));
     }
         public function add( $id = null )
         {    
@@ -31,7 +33,8 @@ class ProductController extends Controller
     
             $categoryList = Category::all();
             $subcategoryList = subcategory::all();
-            return view('product.add',compact( 'data', 'categoryList', 'subcategoryList'));
+            $pin=delivery_charge::all();
+            return view('product.add',compact( 'data', 'categoryList', 'subcategoryList','pin'));
         }
     
         public function subCategory(Request $request)
@@ -65,6 +68,7 @@ class ProductController extends Controller
             'p_desc'  => 'required',
             'p_multi_option'  => 'nullable',
             'p_stock' => 'required',
+            'p_availability' =>'nullable'
         ],[],[
             'p_name'   => 'name',
             'p_cat_parent_id'  => 'Category',
@@ -75,6 +79,7 @@ class ProductController extends Controller
             'p_short_desc'  => 'Short description',
             'p_desc'  => 'description',
             'p_stock'=>'stock',
+            'p_availability' => 'available pincodes',
         ]);
         
         DB::beginTransaction();
@@ -229,7 +234,15 @@ class ProductController extends Controller
             }
             return null;
         })
-        ->rawColumns(['action' => 'action','image' => 'image'])
+        ->addColumn('status', function ($data) {
+            return '<span class="kt-switch kt-switch--sm kt-switch--icon kt-switch--success kt-switch--outline">
+                        <label>
+                            <input type="checkbox" '.(check_permission('adminEdit') ? '' : 'disabled').' class="chkbox_active"  '. ($data->p_status == 'active' ? 'checked' : '') .' value="'.(check_permission('adminEdit') ? $data->p_id : '').'">
+                            <span></span>
+                        </label>
+                    </span>';
+        })
+        ->rawColumns(['action' => 'action','image' => 'image','status'=>'status'])
         ->make(true);
     }
 
@@ -317,6 +330,18 @@ class ProductController extends Controller
         return $result;
         // return compact('result','stringResult');
     }
+
+
+    public function statusChange(Request $request)
+    {
+        if(!$request->ajax()){
+            return abort(404);
+        }
+        $affected = Product::where('p_id', request('id'))->update(array('p_status' => request('status')));
+        echo ($affected > 0) ? true :  false;
+    }
+
+
 
   }
 

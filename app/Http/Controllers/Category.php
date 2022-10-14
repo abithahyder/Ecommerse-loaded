@@ -145,7 +145,7 @@ class Category extends Controller
         if(!$request->ajax())
         return abort(404);
 
-        $category = Categories::select('id','category_name','category_image')->orderBy('id','desc');
+        $category = Categories::select('id','category_name','category_image','status')->orderBy('id','desc');
 
         return DataTables::of($category)
             ->addColumn('action', function ($category) {
@@ -164,7 +164,23 @@ class Category extends Controller
             }
             return null;
         })
-        ->rawColumns(['action' => 'action', 'image' => 'image'])
+        ->addColumn('status', function ($category) {
+            return '<span class="kt-switch kt-switch--sm kt-switch--icon kt-switch--success kt-switch--outline">
+                        <label>
+                            <input type="checkbox" '.(check_permission('adminEdit') ? '' : 'disabled').' class="chkbox_active"  '. ($category->status == 'active' ? 'checked' : '') .' value="'.(check_permission('adminEdit') ? $category->id : '').'">
+                            <span></span>
+                        </label>
+                    </span>';
+        })
+        ->rawColumns(['action' => 'action', 'image' => 'image','status'=>'status'])
         ->make(true);
+    }
+    public function statusChange(Request $request)
+    {
+        if(!$request->ajax()){
+            return abort(404);
+        }
+        $affected = Categories::where('id', request('id'))->update(array('status' => request('status')));
+        echo ($affected > 0) ? true :  false;
     }
 }

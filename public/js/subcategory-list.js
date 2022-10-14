@@ -49,6 +49,7 @@ $(document).ready(function() {
         //    { data: 'ug_name',name: 'user_groups.ug_name' },
            { data: 'parent' ,orderable: false, searchable: false},
            { data: 'image' ,orderable: false, searchable: false},
+           {data:'status'},
            { data: 'action', name: 'action', orderable: false, searchable: false}
        ]
     });
@@ -142,7 +143,7 @@ $(document).on('change', '.chkbox_active', function () {
         }
     });  
     $.ajax({
-        url : base_url+'/admin/status-change',
+        url : base_url+'/sub-category/status-change',
         type : 'POST',
         data : {id:$(this).val(), status : status},
         dataType:'json',

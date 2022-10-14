@@ -81,6 +81,7 @@
                         <th>#ID</th>
                         <th>Title</th>
                         <th>Images</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

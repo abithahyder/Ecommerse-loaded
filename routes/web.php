@@ -60,7 +60,7 @@ Route::post( 'paytm/payment', [PaytmController::class, 'paytmPayment'] )->name( 
 
 // ********** Admin Panel route start **********************************************************************
 
-Route::get('/','MainController@redirect');
+Route::get('/','HomeController@index');
 Route::group([ 'middleware' => [ 'auth', 'CheckForMaintenanceMode' , 'CheckPermisssion']], function () {
     
     Route::get('/dashboard', 'HomeController@index')->name('dashboard');
@@ -105,6 +105,7 @@ Route::group([ 'middleware' => [ 'auth', 'CheckForMaintenanceMode' , 'CheckPermi
     Route::get('/setting/delivery-charge/{id}', 'settings@deliveryCharge')->name('setting.delivery.charge.edit');
     Route::post('/setting/delivery-charge/save', 'settings@deliveryChargeSave')->name('setting.delivery.charge.save');
     Route::get('/setting/delivery-charge-delete/{id}', 'settings@deliveryChargeDelete')->name('setting.delivery.charge.delete');
+    Route::get('/setting/add_availability/', 'settings@addavailability')->name('setting.addavailability');
     // ********** SMTP settings  **********
     // Get Method
     Route::get('smtp', 'smtp@index')->name('smtp');
@@ -135,7 +136,8 @@ Route::get('category/edit/{id}', 'Category@add')->name('category.edit');
 Route::post('category/get-data', 'Category@getData')->name('category.data');
 Route::post('category/save', 'Category@store')->name('category.save');
 Route::post('category/delete/','Category@destroy')->name('category.delete');
- // ********** Client  **********
+Route::post('/category/status-change','Category@statuschange'); 
+// ********** Client  **********
     // Get Method
     Route::get('user-management', 'Client@index')->name('client.list');
     Route::get('user/add', 'Client@add')->name('client.add');
@@ -168,9 +170,9 @@ Route::post('product/image-delete','ProductController@imageDelete')->name('produ
 Route::post('product/save', 'ProductController@save')->name('product.save');
 Route::post('product/delete','ProductController@delete')->name('product.delete');
 Route::post('product/combinations-varient','ProductController@variantList')->name('product.variant.list');
-Route::post('product/update-sku','ProductControllers@updateSku')->name('product.update.sku');
+Route::post('product/update-sku','ProductController@updateSku')->name('product.update.sku');
 Route::post('product/delete-variant','ProductController@deleteVariant')->name('product.delete.variant');
-
+Route::post('product/status-change' ,'ProductController@statusChange');
 Route::get('sub-category','SubCategory@index')->name('subcategory.list');
 Route::get('sub-category/add', 'SubCategory@add')->name('subcategory.add');
 Route::get('sub-category/edit/{id}', 'SubCategory@add')->name('subcategory.edit');
@@ -178,12 +180,15 @@ Route::get('sub-category/edit/{id}', 'SubCategory@add')->name('subcategory.edit'
 Route::post('sub-category/get-data', 'SubCategory@getdata')->name('subcategory.data');
 Route::post('sub-category/save', 'SubCategory@store')->name('subcategory.save');
 Route::post('sub-category/delete/','SubCategory@delete')->name('subcategory.delete');
+Route::post('/sub-category/status-change','SubCategory@statusChange');
 //****Order management */
 Route::get('order-management', 'OrderControllers@index')->name('order.list');
-    Route::get('order/details/{id}', 'OrderControllers@details')->name('order.edit');
-    
-    Route::post('order/get-data', 'OrderControllers@getData')->name('order.data');
-    Route::post('order/status-update', 'OrderControllers@statusUpdate')->name('order.status.update');
+Route::get('order/details/{id}', 'OrderControllers@details')->name('order.edit');
+Route::post('/order/itempaymentstatus-update','OrderControllers@itempaystatusUpdate');
+Route::post('/order/itemdelistatus-update','OrderControllers@itemdelivstatusUpdate');
+
+Route::post('order/get-data', 'OrderControllers@getData')->name('order.data');
+Route::post('order/status-update', 'OrderControllers@statusUpdate')->name('order.status.update');
 
 });
 // ********** Admin Panel route end **********************************************************************
@@ -196,3 +201,5 @@ Route::get('delivered/{id}','MainController@delivered');
 Route::get('paid/{id}','MainController@paid');
 Route::post('/add_to_cart/{id}','MainController@add_to_cart');
 Route::post('/checkout/save','MainController@checkoutsave')->name('checkout.save');
+Route::post('/apply_coupon','MainController@applycoupon')->name('coupon.apply');
+Route::get('/placeorder','MainController@placeorder')->name('placeorder');
